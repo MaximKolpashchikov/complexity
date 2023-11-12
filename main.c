@@ -7,7 +7,7 @@ int main (int argc, char **argv)
 {
     srand(time(NULL));
 
-    unsigned size = 10;
+    unsigned size = 8;
     double scale = 10;
     double shift = 0;
     int prec = 2;
@@ -23,12 +23,13 @@ int main (int argc, char **argv)
     matrix b = mtx_cpy(a, size / 2, 0, 0);
     matrix c = mtx_cpy(a, size / 2, size / 2, size / 2);
 
-    matrix d, e, f;
-    d = e = f = NULL;
+    matrix d, e, f, g;
+    d = e = f = g = NULL;
 
-    mtx_sum(b, c, &d);
-    mtx_sub(b, c, &e);
+    mtx_sum(b, c, &d, 1, 1);
+    mtx_sum(b, c, &e, 1, -1);
     mtx_mult(b, c, &f);
+    mtx_strassen(b, c, &g);
 
     mtx_print(a, prec);
     puts("----------------------------------------------------------------");
@@ -41,6 +42,8 @@ int main (int argc, char **argv)
     mtx_print(e, prec);
     puts("----------------------------------------------------------------");
     mtx_print(f, prec);
+    puts("----------------------------------------------------------------");
+    mtx_print(g, prec);
 
     mtx_free(a);
     mtx_free(b);
@@ -48,6 +51,7 @@ int main (int argc, char **argv)
     mtx_free(d);
     mtx_free(e);
     mtx_free(f);
+    mtx_free(g);
 
     return 0;
 }

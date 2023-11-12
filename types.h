@@ -27,16 +27,16 @@ void mtx_fill (matrix m, double scale, double shift);
 // Print out matrix m with precision p
 void mtx_print (matrix m, int p);
 
-// Sum two matrices in-place: a(i, j) += b(i, j)
-void mtx_blit (matrix a, matrix b);
+// Sum two matrices in-place: a(i, j) += k * b(i, j)
+void mtx_blit (matrix a, matrix b, double k);
 
-// Sum two matrices into c
-void mtx_sum (matrix a, matrix b, matrix *c);
+// Sum two matrices: c(i, j) = k * a(i, j) + l * b(i, j)
+void mtx_sum (matrix a, matrix b, matrix *c, double k, double l);
 
-// Subtract two matrices into c
-void mtx_sub (matrix a, matrix b, matrix *c);
-
-// Multiply two matrices into c
+// Multiply two matrices
 void mtx_mult (matrix a, matrix b, matrix *c);
+
+// Multiply two matrices
+void mtx_strassen (matrix a, matrix b, matrix *c);
 
 #endif
