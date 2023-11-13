@@ -21,6 +21,9 @@ double mtx_set (matrix m, unsigned i, unsigned j, double x);
 // Free all memory occupied by matrix m
 void mtx_free (matrix m);
 
+// Set all elements of matrix m to 0
+void mtx_null (matrix m);
+
 // Fill a matrix with random values: [0; 1] * scale + shift
 void mtx_fill (matrix m, double scale, double shift);
 

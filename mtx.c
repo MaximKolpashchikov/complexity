@@ -30,7 +30,8 @@ struct _buf *buf_new (unsigned width)
     struct _buf *ptr = malloc(sizeof(struct _buf) + width * width * sizeof(double));
     ptr->ref = 1;
     ptr->len = width;
-    memset(ptr->arr, 0, width * width * sizeof(double));
+    // memset(ptr->arr, 0, width * width * sizeof(double));
+    fprintf(stderr, "Allocated a buffer of size %u x %u\n", width, width);
     return ptr;
 }
 
@@ -84,6 +85,11 @@ void mtx_free (matrix m)
 {
     buf_free(m->b);
     free(m);
+}
+
+void mtx_null (matrix m)
+{
+    memset(m->b->arr, 0, m->b->len * m->b->len * sizeof(double));
 }
 
 void mtx_fill (matrix m, double scale, double shift)
@@ -188,6 +194,7 @@ void mtx_strassen (matrix a, matrix b, matrix *c)
     }
 
     if (*c == NULL) *c = mtx_new(a->b_len);
+    mtx_null(*c);
 
     for (i = 0; i < 7; ++i)
     {
@@ -212,10 +219,9 @@ void mtx_strassen (matrix a, matrix b, matrix *c)
         mtx_free(b2);
         mtx_free(c1);
         mtx_free(c2);
-        mtx_free(m);
-        m = NULL;
     }
 
     mtx_free(s1);
     mtx_free(s2);
+    mtx_free(m);
 }
