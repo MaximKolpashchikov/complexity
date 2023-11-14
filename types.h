@@ -3,14 +3,11 @@
 
 typedef struct _mtx *matrix;
 
-// Create a new matrix sized (width, width)
-matrix mtx_new (unsigned width);
+// Create a new matrix sized (rows, cols)
+matrix mtx_new (unsigned rows, unsigned cols);
 
-// Extract a submatrix sized (width, width) at offset (r_off, c_off)
-matrix mtx_cpy (matrix m, unsigned width, unsigned r_off, unsigned c_off);
-
-// Get a size of matrix m
-unsigned mtx_size (matrix m);
+// Extract a submatrix sized (rows, cols) at offset (roff, coff)
+matrix mtx_cpy (matrix m, unsigned rows, unsigned cols, unsigned roff, unsigned coff);
 
 // Get a matrix element m(i, j)
 double mtx_get (matrix m, unsigned i, unsigned j);

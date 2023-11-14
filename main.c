@@ -17,41 +17,18 @@ int main (int argc, char **argv)
     if (argc > 3) shift = strtod(argv[3], NULL);
     if (argc > 4) prec = strtol(argv[4], NULL, 10);
 
-    matrix a = mtx_new(size);
+    matrix a = mtx_new(size, size);
     mtx_fill(a, scale, shift);
 
-    matrix b = mtx_cpy(a, size / 2, 0, 0);
-    matrix c = mtx_cpy(a, size / 2, size / 2, size / 2);
+    matrix b = mtx_new(size, size);
+    mtx_fill(b, scale, shift);
 
-    matrix d, e, f, g;
-    d = e = f = g = NULL;
-
-    mtx_sum(b, c, &d, 1, 1);
-    mtx_sum(b, c, &e, 1, -1);
-    mtx_mult(b, c, &f);
-    mtx_strassen(b, c, &g);
-
-    mtx_print(a, prec);
-    puts("----------------------------------------------------------------");
-    mtx_print(b, prec);
-    puts("----------------------------------------------------------------");
-    mtx_print(c, prec);
-    puts("----------------------------------------------------------------");
-    mtx_print(d, prec);
-    puts("----------------------------------------------------------------");
-    mtx_print(e, prec);
-    puts("----------------------------------------------------------------");
-    mtx_print(f, prec);
-    puts("----------------------------------------------------------------");
-    mtx_print(g, prec);
+    matrix c = NULL;
+    mtx_strassen(a, b, &c);
 
     mtx_free(a);
     mtx_free(b);
     mtx_free(c);
-    mtx_free(d);
-    mtx_free(e);
-    mtx_free(f);
-    mtx_free(g);
 
     return 0;
 }
