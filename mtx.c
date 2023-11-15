@@ -57,7 +57,7 @@ matrix mtx_new (unsigned rows, unsigned cols)
     m->c_off = 0;
     m->b = buf_new(rows, cols);
     // DEBUG
-    fprintf(stderr, "Created new matrix sized %u x %u\n", rows, cols);
+    // fprintf(stderr, "Created new matrix sized %u x %u\n", rows, cols);
     return m;
 }
 
@@ -70,7 +70,7 @@ matrix mtx_cpy (matrix m, unsigned rows, unsigned cols, unsigned roff, unsigned 
     n->c_off = m->c_off + coff;
     n->b = buf_cpy(m->b);
     // DEBUG
-    fprintf(stderr, "Created new matrix copy sized %u x %u\n", rows, cols);
+    // fprintf(stderr, "Created new matrix copy sized %u x %u\n", rows, cols);
     return n;
 }
 
@@ -212,7 +212,7 @@ void mtx_strassen (matrix a, matrix b, matrix c)
     q = a->b_rows / 2;
     if (a->b_rows % 2) ++q;
 
-    if (q == 1)
+    if (q <= 100)
     {
         mtx_mult(a, b, c);
         return;
