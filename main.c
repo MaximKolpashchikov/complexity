@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "types.h"
+#include "mtx.h"
 
 int main (int argc, char **argv)
 {
@@ -19,16 +19,28 @@ int main (int argc, char **argv)
 
     matrix a = mtx_new(size, size);
     mtx_fill(a, scale, shift);
+    mtx_print(a, prec);
+    printf("\n");
 
     matrix b = mtx_new(size, size);
     mtx_fill(b, scale, shift);
+    mtx_print(b, prec);
+    printf("\n");
 
-    matrix c = NULL;
-    mtx_strassen(a, b, &c);
+    matrix c = mtx_new(size, size);
+    mtx_strassen(a, b, c);
+    mtx_print(c, prec);
+    printf("\n");
+
+    matrix d = mtx_new(size, size);
+    mtx_mult(a, b, d);
+    mtx_print(d, prec);
+    printf("\n");
 
     mtx_free(a);
     mtx_free(b);
     mtx_free(c);
+    mtx_free(d);
 
     return 0;
 }

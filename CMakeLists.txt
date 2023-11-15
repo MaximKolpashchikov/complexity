@@ -1,3 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
 project(Complexity VERSION 0.1 HOMEPAGE_URL "https://github.com/MaximKolpashchikov/complexity" LANGUAGES C)
+include(CTest)
 add_executable(main main.c mtx.c)
+add_test(NAME "Memory test" COMMAND valgrind --leak-check=full --error-exitcode=1 ./main)
