@@ -126,6 +126,8 @@ void mtx_print (matrix m, int p)
 {
     unsigned i, j;
 
+    puts("--------------------------------");
+
     for (i = 0; i < m->b_rows; ++i)
     {
         for (j = 0; j < m->b_cols; ++j)
@@ -134,6 +136,8 @@ void mtx_print (matrix m, int p)
         }
         printf("\n");
     }
+
+    puts("--------------------------------");
 }
 
 void mtx_blit (matrix s, matrix d, double k)
