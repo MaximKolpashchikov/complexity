@@ -29,8 +29,22 @@ struct _mtx
 #define buf_len(r, c) (r) * (c) * sizeof(double)
 #define buf_get(b, i, j) (b)->arr[(i) * (b)->brp + (j)]
 
+int is_pow_of_two (unsigned value)
+{
+    unsigned i;
+    unsigned v = 0;
+
+    for (i = 0; i < 8 * sizeof(unsigned); ++i)
+    {
+        v += (value >> i) & 0x01;
+    }
+
+    return v == 1;
+}
+
 struct _buf *buf_new (unsigned rows, unsigned cols)
 {
+    if (is_pow_of_two(cols)) ++cols;
     struct _buf *ptr = malloc(sizeof(struct _buf) + buf_len(rows, cols));
     ptr->ref = 1;
     ptr->brp = cols;
@@ -212,7 +226,7 @@ void mtx_strassen (matrix a, matrix b, matrix c)
     q = a->b_rows / 2;
     if (a->b_rows % 2) ++q;
 
-    if (q <= 100)
+    if (q <= 64)
     {
         mtx_mult(a, b, c);
         return;
