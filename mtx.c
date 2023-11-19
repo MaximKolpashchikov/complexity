@@ -122,6 +122,25 @@ void mtx_fill (matrix m, double scale, double shift)
     }
 }
 
+matrix mtx_load (FILE *fp, unsigned rows, unsigned cols)
+{
+    unsigned i, j;
+    double t;
+
+    matrix m = mtx_new(rows, cols);
+
+    for (i = 0; i < rows; ++i)
+    {
+        for (j = 0; j < cols; ++j)
+        {
+            fscanf(fp, "%lf", &t);
+            mtx_set(m, i, j, t);
+        }
+    }
+
+    return m;
+}
+
 void mtx_print (matrix m, int p)
 {
     unsigned i, j;

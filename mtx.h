@@ -27,6 +27,9 @@ void mtx_null (matrix m);
 // Fill a matrix with random values: [0; 1] * scale + shift
 void mtx_fill (matrix m, double scale, double shift);
 
+// Load a matrix from a file
+matrix mtx_load (FILE *fp, unsigned rows, unsigned cols);
+
 // Print out matrix m with precision p
 void mtx_print (matrix m, int p);
 

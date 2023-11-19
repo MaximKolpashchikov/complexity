@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <time.h>
 #include "mtx.h"
@@ -17,24 +18,38 @@ void measure_time (struct timespec *a, struct timespec *b, struct timespec *c)
     }
 }
 
+void load_data (FILE *fp, matrix *a, matrix *b, unsigned *n)
+{
+    fscanf(fp, "%u", n);
+    *a = mtx_load(fp, *n, *n);
+    *b = mtx_load(fp, *n, *n);
+}
+
 int main (int argc, char **argv)
 {
     // Initialize random sequence
     srand(time(NULL));
 
-    // Prepare program parameters
+    // Default generator parameters
     unsigned size = 8;
     double scale = 10;
     double shift = 0;
-    int prec = 2;
+
+    // Input parameters
+    int gene = 0;
+    char *path = NULL;
+
+    // Output parameters
     int quiet = 0;
+    int prec = 2;
 
     // Prepare necessary variables
+    matrix a, b, c, d;
     struct timespec ts1, ts2, tr1, tr2;
     int opt;
 
     // Parse command line options
-    while ((opt = getopt(argc, argv, "s:m:o:p:q")) != -1)
+    while ((opt = getopt(argc, argv, "s:m:o:gf:qp:")) != -1)
     {
         switch (opt)
         {
@@ -47,27 +62,48 @@ int main (int argc, char **argv)
             case 'o':
                 shift = strtod(optarg, NULL);
             break;
-            case 'p':
-                prec = strtol(optarg, NULL, 10);
+            case 'g':
+                gene = 1;
+            break;
+            case 'f':
+                path = strdup(optarg);
             break;
             case 'q':
                 quiet = 1;
             break;
+            case 'p':
+                prec = strtol(optarg, NULL, 10);
+            break;
             default:
-                fprintf(stderr, "Usage: %s [-s size] [-m scale] [-o shift] [-p precision] [-q]\n", argv[0]);
+                fprintf(stderr, "Usage: %s [-s size] [-m scale] [-o shift] [-g] [-f file] [-q] [-p precision]\n", argv[0]);
             break;
         }
     }
 
-    // Prepare all matrices
-    matrix a = mtx_new(size, size);
-    mtx_fill(a, scale, shift);
+    // Prepare input matrices
+    if (gene)
+    {
+        a = mtx_new(size, size);
+        b = mtx_new(size, size);
+        mtx_fill(a, scale, shift);
+        mtx_fill(b, scale, shift);
+    }
+    else
+    if (path)
+    {
+        FILE *io = fopen(path, "rt");
+        load_data(io, &a, &b, &size);
+        fclose(io);
+        free(path);
+    }
+    else
+    {
+        load_data(stdin, &a, &b, &size);
+    }
 
-    matrix b = mtx_new(size, size);
-    mtx_fill(b, scale, shift);
-
-    matrix c = mtx_new(size, size);
-    matrix d = mtx_new(size, size);
+    // Prepare result matrices
+    c = mtx_new(size, size);
+    d = mtx_new(size, size);
 
     // Run classic algorithm
     clock_gettime(CLOCK_MONOTONIC, &ts1);
