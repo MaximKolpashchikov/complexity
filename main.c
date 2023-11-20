@@ -25,6 +25,22 @@ void load_data (FILE *fp, matrix *a, matrix *b, unsigned *n)
     *b = mtx_load(fp, *n, *n);
 }
 
+void print_help (const char *prog)
+{
+    printf("Использование: %s [опции]\n", prog);
+    puts("\nОпции генератора:");
+    puts("-s <число>\t задаёт размер матриц, по умолчанию 8");
+    puts("-m <число>\t задаёт максимальное значение элементов, по умолчанию 10");
+    puts("-o <число>\t задаёт смещение значений элементов, по умолчанию 0");
+    puts("\nОпции ввода:");
+    puts("-g\t\t включает автоматическую генерацию входных данных, по умолчанию отключено");
+    puts("-f <путь>\t включает чтение входных данных из файла, по умолчанию читает стандартный ввод");
+    puts("\nОпции вывода:");
+    puts("-q\t\t включает тихий режим, по умолчанию отключено");
+    puts("-p <число>\t задаёт число знаков после запятой, по умолчанию 2");
+    exit(0);
+}
+
 int main (int argc, char **argv)
 {
     // Initialize random sequence
@@ -49,7 +65,7 @@ int main (int argc, char **argv)
     int opt;
 
     // Parse command line options
-    while ((opt = getopt(argc, argv, "s:m:o:gf:qp:")) != -1)
+    while ((opt = getopt(argc, argv, "s:m:o:gf:qp:h")) != -1)
     {
         switch (opt)
         {
@@ -74,8 +90,11 @@ int main (int argc, char **argv)
             case 'p':
                 prec = strtol(optarg, NULL, 10);
             break;
+            case 'h':
+                print_help(argv[0]);
+            break;
             default:
-                fprintf(stderr, "Usage: %s [-s size] [-m scale] [-o shift] [-g] [-f file] [-q] [-p precision]\n", argv[0]);
+                fprintf(stderr, "Неопознанная опция: '%c', игнорирую\n", opt);
             break;
         }
     }
