@@ -93,9 +93,6 @@ int main (int argc, char **argv)
             case 'h':
                 print_help(argv[0]);
             break;
-            default:
-                fprintf(stderr, "Неопознанная опция: '%c', игнорирую\n", opt);
-            break;
         }
     }
 
